@@ -1,0 +1,37 @@
+  429  cd
+  430  mkdir -p localrepo
+  431  cd localrepo
+  432  echo "# CTA200" >> README.md
+  433  git init
+  434  git add README.md
+  435  git commit -m "first commit"
+  436  git branch -M main
+  437  git remote add origin git@github.com:leandrorizk/CTA200.git
+  438  git push -u origin main
+  439  vim LICENSE
+  440  git add LICENSE
+  441  git commit -m "Added license"
+  442  git push
+  443  makedir assignment_1
+  444  mkdir assignment_1
+  445  cd assignment_1
+  446  cp ~/CTA200/assignment1_2021/main.c .
+  447  cp ~/CTA200/assignment1_2021/average.c .
+  448  cp ~/CTA200/assignment1_2021/average.h .
+  449  ls -l
+  450  vim Makefile
+  451  ls -l
+  452  make
+  453  ls -l
+  454  ./main
+  455  git add Makefile main.c average.c average.h
+  456  git commit -m "Just doing what the assignment says"
+  457  git push
+  458  vim main.c
+  459  make
+  460  ./main
+  461  git add main.c
+  462  git commit -m "All numbers multiplied by 10"
+  463  git push
+  464  history 50
+  465  history 37 > history.txt
