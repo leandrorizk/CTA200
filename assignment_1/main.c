@@ -3,11 +3,11 @@
 
 
 int main() {
-    double arr[] = {1.0, 2.0, 3.0, 4.0};
+    double arr[] = {10, 20, 30, 40};
 
     double result = average(4, arr);
 
-    printf("The average of 1, 2, 3 and 4 is: %.4f\n", result);
+    printf("The average of 10, 20, 30 and 40 is: %.4f\n", result);
     return 0;    
 }
 
