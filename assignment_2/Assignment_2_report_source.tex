@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref} 
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{fixmath}
+\usepackage{minted}
+
+
+\author{Leandro Rizk \\ leo.rizk@mail.utoronto.ca \\ CTA200 -- University of Toronto}
+\title{Assignment 2}
+\date{8 May 2021}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{Question 1}
+
+\subsection{Methods}
+
+\paragraph{}
+I wrote two functions: deriv1 uses method 1 and deriv2 uses method 2. Each function takes a callable (i.e. another function), a value for $x_0$, and a step size ($h$). I used each function to calculate the derivative of $sin(x)$ at $x$ = 0.1 for an array of 99 step sizes ranging from 0.01 to 0.99. The derivative of $sin(x)$ is simply $cos(x)$; so to get the relative error, I performed the following operation:
+
+$$ \rm{relative\ error} \; = \; \left| \frac{\rm{numerical\ approximation} \, - \, cos(0.1)}{cos(0.1)} \right|  \, ,$$
+
+where the numerical approximation is the array resulting from calling deriv1 or deriv2. Plotting both methods' relative error arrays vs. the step size array in log scale gives \textbf{Figure \ref{fig1}}.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.44]{Figure1.pdf}
+\caption{Relative error of numerically evaluating the derivative of $sin(x)$ at $x$ = 0.1 in relation to step size \textbf{\label{fig1}}}
+\end{center}
+\end{figure}
+
+\subsection{Analysis}
+
+\paragraph{}
+The relation between the relative error and the step size is roughly linear in logarithmic scales. This is especially true for method 2. A constant coefficient in log scale corresponds to a constant exponent in linear scale. In a sense, the slope in log scale represents the order of magnitude by which the step size affects the relative error. Since the slope in log scale for method 2 is about 1.99 ($\approx$ 2), the relation between relative error and step size for this method should be quadratic. As seen in \textbf{Figure \ref{fig1}}, method 2 produces a consistently smaller error than method 1 over the range of chosen step sizes.
+
+
+
+\section{Question 2}
+
+\subsection{Methods}
+
+\paragraph{}
+I created two arrays for $x$ and $y$, each containing 299 evenly spaced elements from -2 to 2 (exclusive). I then created a Python dictionary, with the key being every possible complex number $c$ obtained from combinations of $x$ and $y$ elements and the values being a list of the 1000 first iterations of $z$ (starting with 0) corresponding to that complex number $c$. To obtain \textbf{Figure \ref{fig2}}, I created an image of the complex plane represented by a 2-D numpy array of the shape (299, 299), initially making all values zero. I wrote a nested for loop that examined the dictionary for every complex number key represented in the 2-D array and that converted the image pixel value from zero to one if np.inf was found in the list of iterations of $z$ for that complex number. \textbf{Figure \ref{fig3}} was created in a similar fashion except, instead of converting the image pixel value from zero to one, the pixel value was converted to the index of the first occurrence of np.inf inside the list of iterations of $z$. If the pixel value remained zero, it was understood that $z$ did not diverge for that point in the complex plane. The resulting colour for zero in the plot was a distinct enough black that it isn't easily confused with a colour corresponding to rapid divergence (represented by purple).
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.4]{Figure2.pdf}
+\caption{Locations in the complex plane where $z$ diverges (shown in yellow) \textbf{\label{fig2}}}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.42]{Figure3.pdf}
+\caption{Divergence of $z$ in the complex plane \textbf{\label{fig3}}}
+\end{center}
+\end{figure}
+
+
+
+\subsection{Analysis}
+
+\paragraph{}
+\textbf{Figures \ref{fig2}} and \textbf{\ref{fig3}} show a Mandelbrot fractal. The edges of the fractal have a $z$ that diverges much more slowly than points farther from the fractal. The plot is symmetric along the real axis, so a complex number will have the same behaviour in $z$ as its complex conjugate.
+
+
+
+\section{Question 3}
+
+\subsection{Methods}
+
+\paragraph{}
+I wrote a SIRmodel function that returns $\frac{dS}{dt}$, $\frac{dI}{dt}$, and $\frac{dR}{dt}$ (as vector) for a given vector $[S, I, R]$. This function is meant to be passed to the function ode from the module scipy.integrate along with initial conditions (that I called $SIR_0$) and time elements: initial time ($t_0$), endtime ($t_{end}$), and timesteps ($dt$). I set $SIR_0$ = [999, 1, 0] (thereby setting $N$ = 1000), $t_0$ = 0, $t_{end}$ = 200, and $dt$ = 0.1 and did not later modify these. The parameters of the SIR model $\beta$ and $\gamma$ were free to be reassigned before using ode. To simplify using ode, I also wrote a function solveode which streamlines the process: it takes the callable (SIRmodel), the initial conditions vector, and the time arguments, performs the necessary steps for using the function ode (with integrator dopri5), and returns the solution ($S(t)$, $I(t)$, $R(t)$) as a 2-D numpy array as well as the time array as a 1-D numpy array. This allowed me to reassign $\beta$ and $\gamma$ and easily solve the differential equations again. In order to make physical sense, $\gamma$ could not exceed 1.
+
+\paragraph{}
+In adding $D$, I assumed deaths were only a result of the disease (susceptible and recovered individuals could not die). So this meant that $D$ was only populated from $I$:
+
+$$ \frac{dD}{dt} \; = \; \frac{\delta \, I}{N} \, , $$
+
+for a death rate $\delta \geq 0$. This means that a term $- \frac{\delta \, I}{N}$ must be added to the definition of $\frac{dI}{dt}$. I repeated the same steps as above, defining the new SIRDmodel callable and passing it to solveode with a new four-element initial conditions vector ($SIRD_0$ = [999, 1, 0, 0]). In order to make physical sense, $\gamma + \delta$ could not exceed 1.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.43]{Figure4.pdf}
+\caption{Disease evolution in a population of 1000 individuals (SIR model) \textbf{\label{fig4}}}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.43]{Figure5.pdf}
+\caption{Disease evolution in a population of 1000 individuals (SIRD model) \textbf{\label{fig5}}}
+\end{center}
+\end{figure}
+
+
+\subsection{Analysis}
+
+\paragraph{}
+In \textbf{Figure \ref{fig4}}, a high infection rate and a slow recovery results ($\beta$ = 2.0, $\gamma$ = 0.1) in a very quick conversion of the entire susceptible population to infected and a more gradual conversion from infected to recovered. The same high infection rate but with a much quicker recovery rate ($\beta$ = 2.0, $\gamma$ = 0.8) quickly converts susceptible to infected and infected to recovered. Since infected individuals recover very quickly, this number cannot build up very much and, as a result, a considerable proportion of the population remains uninfected after the end of the course of the disease. A low infection rate and a slow recovery (($\beta$ = 0.2, $\gamma$ = 0.1), produces a similar result in terms of disease evolution, but on a much longer timescale. Finally, a low infection rate and a rapid recovery ($\beta$ = 1.0, $\gamma$ = 0.8) produces very little active infections from susceptible individuals. Relatively few of the population contract the disease by the end of its course.
+
+\paragraph{}
+In \textbf{Figure \ref{fig5}}, adding the possibility of death simply splits the "removed" individuals into two categories: recovered and deceased. Of note, the death rate ($\delta$) must always be considered in relation to the recovery rate ($\gamma$) and vice versa. For example, in the case of a very small value of $\delta$, a $\gamma$ of zero still means that every infected individual will eventually die of the disease (100\% mortality). For any time t, the sum of susceptible, infected, and removed individuals is always equal to $N$ (1000).
+
+
+
+\end{document}
