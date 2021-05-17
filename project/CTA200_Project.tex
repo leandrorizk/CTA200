@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref} 
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{fixmath}
+\usepackage{minted}
+
+
+\author{Leandro Rizk \\ leo.rizk@mail.utoronto.ca \\ CTA200 -- University of Toronto}
+\title{Computing Project: Background Study on SETI Figures of Merit}
+\date{14 May 2021}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{Introduction}
+
+
+
+\paragraph{}
+The search for extraterrestrial intelligence (SETI) relies on our ability to detect and recognize technosignatures---signs of activity from a technologically advanced civilization. Since we have yet to find any evidence of these, we cannot truly know what we are looking for. We expect that, similar to humans, extraterrestrial civilization may utilize electromagnetic radiation in the radio bands to send and receive information. These technosignatures are expected to be of very narrow bandwidth ($\sim$ 1 Hz), display a Doppler drift due to relative accelerations (from orbits and rotations) between the signal source and our receivers, and not be explained by Earth-based radio-frequency interference (RFI). With so many potentially habitable exoplanets in our galaxy and an entire spectrum of frequencies where there might be a narrow signal, our SETI efforts must strategically span large portions of the sky and observe in a wide range of radio frequencies.
+
+\paragraph{}
+The Breakthrough Listen initiative is the largest program to date aimed at detecting technosignatures. One of the goals of this 10-year program that started in 2016 is to survey one million nearby stars, but it has so far observed only a few thousand. Ongoing and upcoming surveys using MeerKAT and the Very Large Array are expected to achieve this goal in the coming years.
+
+\paragraph{}
+It is worthwhile to compare the merits of previous SETI efforts. Search parameters are either proper to the instruments (e.g. frequency resolution, effective collecting area) or chosen by the researchers (e.g. signal-to-noise ratio threshold, observation time). In this report, I will compare several of these parameters using a variety of metrics with the objective of appreciating what has so far been done in the search for technosignatures and the progress that is yet to come.
+
+
+\section{EIRP and Transmitter Rate}
+
+\paragraph{}
+One method to evaluate a SETI project is to combine the values of \textbf{equivalent isotropic radiated power} (EIRP) and \textbf{transmitter rate} into a single figure of merit, dubbed the \textbf{continuous waveform transmitter rate figure of merit} (CWTFM):
+
+\begin{equation}
+\textrm{CWTFM} \; = \; \zeta_{\textrm{AO}} \, \frac{\textrm{EIRP}}{n_{\textrm{stars}} \, \cdot \, (\upDelta \nu_{\textrm{tot}} / \nu_{\textrm{mid}})} \; ,
+\label{eq1}
+\end{equation}
+
+where the factor $\frac{1}{n_{\textrm{stars}} \, \cdot \, (\upDelta \nu_{\textrm{tot}} / \nu_{\textrm{mid}})}$ represents the transmitter rate. The transmitter rate depends on the number of stars surveyed ($n_{\textrm{stars}}$), the total bandwidth ($\upDelta \nu_{\textrm{tot}}$), and the central frequency ($\nu_{\textrm{mid}}$) of the observation. The coefficient $\zeta_{\textrm{AO}}$ is simply a normalization factor to obtain a CWTFM of 1 when EIRP = $10^{13}$ W (the EIRP of the Arecibo Planetary Radar),  $n_{\textrm{stars}}$ = 1000, and $\upDelta \nu_{\textrm{tot}} / \nu_{\textrm{mid}}$ = 1/2. Rearranging the variables in \textbf{Equation \ref{eq1}} reveals that $\zeta_{\textrm{AO}} = 5 \times 10^{-11}$ W$^{-1}$.
+
+\paragraph{}
+\textbf{Figure \ref{fig1}} is a means of visualizing the CWTFM of SETI projects. In this figure, adapted from Enriquez et al. (2017) and expanded to include more surveys, EIRP is plotted against transmitter rate on logarithmic scales. Searches that are positioned closer to the bottom left corner in this plot have a smaller CWTFM and can thus be qualified as more effective. This plot sort of shows the strengths of a particular survey---those with higher star counts and/or higher relative observation bandwidths are towards the bottom while those with smaller EIRP are towards the left.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.46]{Figure1.pdf}
+\caption{Comparison of past and future SETI projects (adapted from Enriquez et al. (2017), Figure 7) \textbf{\label{fig1}}}
+\end{center}
+\end{figure}
+
+\textbf{Figure \ref{fig2}}, on the other hand, compares the CWTFM of SETI projects head-on. If we consider that a CWTFM of $<$ 1 corresponds to a more effective survey, then only a few recent or future surveys make the cut. Those are the surveys using the Green Bank Telescope, the Karl G. Jansky Very Large Array, MeerKAT, the Square Kilometre Array, and the next-generation Very Large Array.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.54]{Figure 1a.png}
+\caption{Continuous waveform transmitter rate figure of merit (CWTFM) of past and future SETI projects \textbf{\label{fig2}}}
+\end{center}
+\end{figure}
+
+
+\section{Frequency Range}
+
+\paragraph{}
+Another interesting parameter to compare between SETI projects is the \textbf{total bandwidth} covered by a search. Over the years, this frequency range has been able to significantly increase. \textbf{Figure \ref{fig3}} compares the frequency range of a number of surveys as well as their sky coverage and relative sensitivity to picking up an event. (Sensitivity is further contrasted in \textbf{Figures \ref{fig4}} and \textbf{\ref{fig5}}.)
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.46]{Figure2.pdf}
+\caption{Frequency range, sky coverage, and sensitivity of SETI projects \textbf{\label{fig3}}}
+\end{center}
+\end{figure}
+
+\paragraph{}
+\textbf{Figure \ref{fig3}} is a bit misleading, as sky coverage is in reality dependent on the frequency being observed. This is because sky coverage is a function of the telescope's \textbf{beamwidth}, which is itself inversely proportional to the operating frequency. A more accurate representation would show ranges following a descending slope. I think, however, the plot still achieves its objective of visually comparing SETI coverage in sky area and in frequency space.
+
+
+\section{Sensitivity}
+
+\paragraph{}
+A survey's sensitivity is best described by the \textbf{minimum detectable flux} ($F_{\textrm{min}}$), as determined by \textbf{Equation \ref{eq2}}:
+
+\begin{equation}
+F_{\textrm{min}} \; = \; \textrm{SNR}_{\textrm{min}} \, \cdot \, \textrm{SEFD} \, \sqrt{\frac{\delta \nu}{n_{\textrm{pol}} \, \cdot \, \tau_{\textrm{obs}}}} \; ,
+\label{eq2}
+\end{equation}
+
+where SNR$_{\textrm{min}}$ is the \textbf{signal-to-noise ratio threshold}, SEFD is the \textbf{system equivalent flux density}, $\delta \nu$ is the spectral resolution, $n_{\textrm{pol}}$ in the number of polarizations, and $\tau_{\textrm{obs}}$ is the observation time. The SEFD can be found by SEFD $= 2 k_{\textrm{B}} T_{\textrm{sys}} / A_{\textrm{eff}}$ (where $T_{\textrm{sys}}$ and $A_{\textrm{eff}}$ respectively represent the system temperature and effective collecting area of the telescope). Flux density is often measured in janskys (Jy = $10^{-26}$ W/m$^2$/Hz).
+
+\paragraph{}
+Where the information was available, I plotted the minimum detectable flux of a project in relation to the sky coverage in \textbf{Figure \ref{fig4}}. The plot also shows the flux from a hypothetical Arecibo-like transmitter (10$^{13}$ W) at various distances from the receiver, assuming a transmission bandwidth of 1 Hz. The same information is displayed in \textbf{Figure \ref{fig5}}, but presented differently: this figure plots the distance a hypothetical Arecibo-like transmitter (10$^{13}$ W) must be to produce the minimum detectable flux of a survey, assuming 1-Hz transmission bandwidth. It is important to note that, in both \textbf{Figures \ref{fig4}} and \textbf{\ref{fig5}}, when a project consists of multiple instruments (e.g. Price 2020 or Project Phoenix), the sky coverage plotted corresponds to the total value for the entire project. These figures really showcase the strength of the (ongoing) survey using the MeerKAT array.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.46]{Figure3.pdf}
+\caption{Minimum detectable flux of SETI projects \textbf{\label{fig4}}}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.46]{Figure4.pdf}
+\caption{SETI projects' ability to detect an Arecibo-like transmitter \textbf{\label{fig5}}}
+\end{center}
+\end{figure}
+
+
+\section{Drake Figure of Merit}
+
+\paragraph{}
+Yet another figure of merit used in comparing SETI projects is called the \textbf{Drake figure of merit} (DFM). This is described by \textbf{Equation \ref{eq3}}:
+
+\begin{equation}
+\textrm{DFM} \; = \; \frac{\upDelta \nu_{\textrm{tot}} \, \cdot \, \upOmega}{S_{\textrm{min}}^{3/2}} \; ,
+\label{eq3}
+\end{equation}
+
+where $\upDelta \nu_{\textrm{tot}}$ is the total bandwidth in Hz, $\upOmega$ is sky coverage in square degrees, and $S_{\textrm{min}}$ is the minimum detectable flux density in Jy ($S_{\textrm{min}} = F_{\textrm{min}} / \delta \nu_{\textrm{t}}$), where we can assume the bandwidth of the transmitted signal to be $\delta \nu_{\textrm{t}}$ = 1 Hz.
+
+\paragraph{}
+\textbf{Figure \ref{fig6}} compares the Drake figure of merit of a number of SETI projects, where information was available. In this metric, the MeerKAT survey stands out again.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.54]{Figure5.png}
+\caption{Drake figure of merit for SETI projects \textbf{\label{fig6}}}
+\end{center}
+\end{figure}
+
+
+\section{Conclusions}
+
+\paragraph{}
+Over the years, SETI surveys have improved in their sensitivity and in the observation frequency range. Large variations in the parameters between projects have required me to use logarithmic scales in all my figures to be able to adequately make visual comparisons.
+
+\paragraph{}
+The ongoing search using the MeerKAT array in South Africa seems to be very promising thanks to its large sky coverage as well as high sensitivity. MeerKAT is expected to propel the Breakthrough Listen initiative in its target to survey one million stars for technosignatures.
+
+\end{document}
